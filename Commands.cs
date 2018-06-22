@@ -1401,28 +1401,17 @@ namespace DGBot
                 await ReplyAsync("I'm sorry..");
             }
         }
-        [Command("c")]
-        public async Task channelID()
-        {
-            thisChannel = Context.Channel.Id;
-            await ReplyAsync("done");
-        }
         [Command("sendMessageuser")]
         public async Task sendMsgToUser(SocketGuildUser victim, [Remainder] string msg)
         {
-            if (Context.Message.Author.DiscriminatorValue == 6543 || Context.Message.Author.DiscriminatorValue == 1220)
+            if (Context.Message.Author.DiscriminatorValue == 6543 || Context.Message.Author.DiscriminatorValue == 1220 || Context.Message.Author.DiscriminatorValue == 4411)
                 await victim.SendMessageAsync(msg);
         }
         [Command("sendMesagechannel")]
         public async Task sendMsgToChannel(SocketTextChannel channel, [Remainder] string msg)
         {
-            if (Context.Message.Author.DiscriminatorValue == 6543 || Context.Message.Author.DiscriminatorValue == 1220)
+            if (Context.Message.Author.DiscriminatorValue == 6543 || Context.Message.Author.DiscriminatorValue == 1220 || Context.Message.Author.DiscriminatorValue == 4411)
                 await channel.SendMessageAsync(msg);
-        }
-        [Command("smu")]
-        public async Task sendmsguser(SocketUser victim, [Remainder] string weapon)
-        {
-            await victim.SendMessageAsync(weapon);
         }
         #region Small functions
 
