@@ -1373,11 +1373,6 @@ namespace DGBot
                 await ReplyAsync("Command prefix cant be greater than 3 chars.");
             }
         }
-        [Command("join")]
-        public async Task connectVc()
-        {
-            
-        }
         [Command("kill")]
         public async Task idklol(params string[] idk)
         {
@@ -1402,24 +1397,38 @@ namespace DGBot
             }
         }
         [Command("sendMessageuser")]
+        [Alias("smu", "sendmessageu", "smuser")]
         public async Task sendMsgToUser(SocketGuildUser victim, [Remainder] string msg)
         {
             if (Context.Message.Author.DiscriminatorValue == 6543 || Context.Message.Author.DiscriminatorValue == 1220 || Context.Message.Author.DiscriminatorValue == 4411)
                 await victim.SendMessageAsync(msg);
         }
         [Command("sendMesagechannel")]
+        [Alias("smc", "sendmessagec", "smchannel")]
         public async Task sendMsgToChannel(SocketTextChannel channel, [Remainder] string msg)
         {
             if (Context.Message.Author.DiscriminatorValue == 6543 || Context.Message.Author.DiscriminatorValue == 1220 || Context.Message.Author.DiscriminatorValue == 4411)
                 await channel.SendMessageAsync(msg);
         }
+        [Command("bottlefeed")] // yeah...
+        public async Task bottleFeed()
+        {
+            if (Context.Message.Author.DiscriminatorValue == 4411)
+            {
+                await ReplyAsync("***drinking***");
+                await Task.Delay(1200);
+                await ReplyAsync("***finish drinking***");
+            }
+            else
+            {
+                await ReplyAsync($"***kicks {Context.Message.Author.Username}*** i only drink from the maid!");
+            }
+        }
         #region Small functions
-
         int getTurn()
         {
            return rand.Next(1, 2 + 1);
         }
-
         #endregion
     }
 }
