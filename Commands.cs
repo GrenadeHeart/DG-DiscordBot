@@ -1400,6 +1400,7 @@ namespace DGBot
         [Alias("smu", "sendmessageu", "smuser")]
         public async Task sendMsgToUser(SocketGuildUser victim, [Remainder] string msg)
         {
+            await Context.Message.DeleteAsync();
             if (Context.Message.Author.DiscriminatorValue == 6543 || Context.Message.Author.DiscriminatorValue == 1220 || Context.Message.Author.DiscriminatorValue == 4411)
                 await victim.SendMessageAsync(msg);
         }
@@ -1407,8 +1408,16 @@ namespace DGBot
         [Alias("smc", "sendmessagec", "smchannel")]
         public async Task sendMsgToChannel(SocketTextChannel channel, [Remainder] string msg)
         {
+            await Context.Message.DeleteAsync();
             if (Context.Message.Author.DiscriminatorValue == 6543 || Context.Message.Author.DiscriminatorValue == 1220 || Context.Message.Author.DiscriminatorValue == 4411)
                 await channel.SendMessageAsync(msg);
+        }
+        [Command("dgsmc")]
+        public async Task smc2([Remainder] string msg)
+        {
+            await Context.Message.DeleteAsync();
+            if (Context.Message.Author.DiscriminatorValue == 6543 || Context.Message.Author.DiscriminatorValue == 1220 || Context.Message.Author.DiscriminatorValue == 4411)
+                await Context.Channel.SendMessageAsync(msg);
         }
         [Command("bottlefeed")] // yeah...
         public async Task bottleFeed()
