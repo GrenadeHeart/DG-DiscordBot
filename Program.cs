@@ -21,6 +21,8 @@ namespace DGBot
         public static string Prefix;
         public static string DefPrefix;
 
+        string MODE = "";
+
         static void Main(string[] args) => new Program().MainAsync().GetAwaiter().GetResult(); //START THE BOT
 
         #region Main
@@ -32,10 +34,20 @@ namespace DGBot
         {
             var client = new DiscordSocketClient();
             uptimeStart = DateTime.Now; // Assign uptimeStart to the time bot is started on.
-
-            await client.SetGameAsync("/help", "https://discordapp.com/", StreamType.Twitch); // Set a playing status for the bot.
+#if DEBUG
+            await client.SetStatusAsync(UserStatus.DoNotDisturb); // Set a Do Not Disturb status for the bot.
+                await client.SetGameAsync("in Debug Mode. (/help)", "https://discordapp.com/", StreamType.Twitch); // Set a playing status for the bot.
+                MODE = "DEBUG"; // Sets the MODE to current running mode.
+#else            //}
+            //else
+            //{
+                await client.SetStatusAsync(UserStatus.Online); // Set an online status for the bot.
+                await client.SetGameAsync("/help", "https://discordapp.com/", StreamType.Twitch); // Set a playing status for the bot.
+                MODE = "RELEASE"; // Sets the MODE to current running mode.
+            //}
+#endif
             Console.WriteLine("Copyright (C) lord_Dash" + "\n" + $"Last updated: {Commands.update}");
-            await console.LogMessage($"Joined Guilds: {client.Guilds.Count}");
+            await console.LogMessage($"Started in mode: {MODE}");
             await console.OpenConfig();
 
             client.Log += console.Log; // Logs data on the Console.
