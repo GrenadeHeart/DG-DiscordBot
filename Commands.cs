@@ -1485,6 +1485,60 @@ namespace DGBot
                 }
             }
         }
+        [Command("addrole")]
+        [Alias("ar", "role", "adduserrole")]
+        public async Task addUserRole(SocketGuildUser user, string roleName)
+        {
+            EmbedBuilder embed = new EmbedBuilder();
+            var msg = await ReplyAsync($"Searching for {roleName}...");
+            var roles = Context.Guild.Roles;
+
+            embed.WithColor(10, 150, 10);
+            embed.WithTitle("Add role to user");
+            embed.WithDescription($"Success! Added role {roleName} to {user.Username}.");
+            embed.WithFooter($"Added by {Context.Message.Author.Username}");
+
+            foreach (var role in roles)
+            {
+                if (role.Name == roleName)
+                {
+                    await user.AddRoleAsync(role);
+                    await msg.ModifyAsync(x =>
+                    {
+                        x.Content = "";
+                        x.Embed = embed.Build();
+                    });
+                    break;
+                }
+            }
+        }
+        [Command("removerole")]
+        [Alias("rr", "remrole", "roleremove")]
+        public async Task removeUserRole(SocketGuildUser user, string roleName)
+        {
+            EmbedBuilder embed = new EmbedBuilder();
+            var msg = await ReplyAsync($"Searching for {roleName}...");
+            var roles = user.Roles;
+
+            embed.WithColor(150, 10, 10);
+            embed.WithTitle("Add role to user");
+            embed.WithDescription($"Success! Removed role {roleName} from {user.Username}.");
+            embed.WithFooter($"Added by {Context.Message.Author.Username}");
+
+            foreach (var role in roles)
+            {
+                if (role.Name == roleName)
+                {
+                    await user.RemoveRoleAsync(role);
+                    await msg.ModifyAsync(x =>
+                    {
+                        x.Content = "";
+                        x.Embed = embed.Build();
+                    });
+                    break;
+                }
+            }
+        }
         #region Small functions
         int getTurn()
         {
