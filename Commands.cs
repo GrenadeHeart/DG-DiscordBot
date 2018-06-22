@@ -26,20 +26,20 @@ namespace DGBot
     {
         private DiscordSocketClient client = new DiscordSocketClient();
         private BotConsole console = new BotConsole();
-        internal static string version = "3.4.0";
+        internal static string version = "3.5.0";
         internal static string prevVersion = "3.2.0";
         /// <summary>
         /// Enter update log here.
         /// </summary>
         internal static string updateContent =
-            "+Made the bot more \"humanly\".. (hopefully) \n" +
-            "+New logo for bot. (only host can see tho) \n" +
-            "+Minor fixes. \n" +
+            "+New `/setuserjoinrole` and `/setbotjoinrole` commands. \n" +
+            "+Updated `/help` \n" +
+            "+Minor changes. \n" +
             "";
         /// <summary>
         /// Enter update date here.
         /// </summary>
-        internal static string update = "17/06/18";
+        internal static string update = "22/06/18";
         static HttpClient http = new HttpClient();
         string botInvite = "https://tinyurl.com/BotInvite";
         static string roll2Question = "";
@@ -281,6 +281,8 @@ namespace DGBot
                     embed01.AddField("/kick", "Kicks the specified user in da butt" + " **/kick @mention <optionalReason>**");
                     embed01.AddField("/ban", "What do you expect this subtext to say?!?!" + " **/ban @mention <optionalReason>**");
                     embed01.AddField("/genocide", "Kill all the messages!" + " **/genocide <optionalKillNo>**");
+                    embed01.AddField("/setuserjoinrole", "Assigns specified role to the user when they join." + " **/setuserjoinrole <roleName>**");
+                    embed01.AddField("/setbotjoinrole", "Assigns specifed role to the bot when it joins." + " **/setbotjoinrole <roleName>**");
                     embed01.WithFooter("Showing page " + pageNum + "/3 pages.");
                     #endregion
                     await Context.Channel.SendMessageAsync("", false, embed01);
@@ -1431,6 +1433,56 @@ namespace DGBot
             else
             {
                 await ReplyAsync($"***kicks {Context.Message.Author.Username}*** i only drink from the maid!");
+            }
+        }
+        [Command("setuserjoinrole")]
+        [Alias("setuserrole", "sujr", "userjoinrole")]
+        public async Task userJoinedRole(string roleName)
+        {
+            EmbedBuilder embed = new EmbedBuilder();
+            EmbedBuilder embed2 = new EmbedBuilder();
+            embed.WithTitle("Set User Joined Role");
+            embed.WithDescription($"Target role: {roleName}");
+
+            embed2.WithTitle("Set User Joined Role");
+            embed2.WithDescription($"Successfully set user join role to {roleName}!");
+
+            await ReplyAsync("", false, embed);
+
+            var roles = Context.Guild.Roles;
+            foreach (var role in roles)
+            {
+                if (role.Name == roleName)
+                {
+                    BotConsole.userJoinRole = role;
+                    await ReplyAsync("", false, embed2);
+                    break;
+                }
+            }
+        }
+        [Command("setbotjoinrole")]
+        [Alias("setbotrole", "sbjr", "botjoinrole")]
+        public async Task botJoinedRole(string roleName)
+        {
+            EmbedBuilder embed = new EmbedBuilder();
+            EmbedBuilder embed2 = new EmbedBuilder();
+            embed.WithTitle("Set Bot Joined Role");
+            embed.WithDescription($"Target role: {roleName}");
+
+            embed2.WithTitle("Set Bot Joined Role");
+            embed2.WithDescription($"Successfully set bot join role to {roleName}!");
+
+            await ReplyAsync("", false, embed);
+
+            var roles = Context.Guild.Roles;
+            foreach (var role in roles)
+            {
+                if (role.Name == roleName)
+                {
+                    BotConsole.botJoinedRole = role;
+                    await ReplyAsync("", false, embed2);
+                    break;
+                }
             }
         }
         #region Small functions
