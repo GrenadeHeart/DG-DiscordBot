@@ -21,6 +21,8 @@ namespace DGBot
         public string token { get; set; }
         public string defPrefix { get; set; }
         public string Prefix { get; set; }
+        public static IRole userJoinRole { get; set; }
+        public static IRole botJoinedRole { get; set; }
         /// <summary>
         /// Log messages on Console.
         /// </summary>
@@ -63,6 +65,26 @@ namespace DGBot
         {
             Console.WriteLine($"{DateTime.Now.ToString("HH:mm:ss")} Message     {logMsg}");
             return Task.CompletedTask;
+        }
+        /// <summary>
+        /// Adds a role to the user/bot joined if any specified.
+        /// </summary>
+        /// <returns></returns>
+        public async Task UserJoinedRole(SocketGuildUser user)
+        {
+            if (!(userJoinRole == null && user.IsBot))
+            {
+                await user.AddRoleAsync(userJoinRole);
+            }
+            else if (!(botJoinedRole == null) && user.IsBot)
+            {
+                await user.AddRoleAsync(botJoinedRole);
+            }
+            else
+            {
+                await LogError("Target role not specified.");
+            }
+            //return Task.CompletedTask;
         }
         public Task TryConnect()
         {
