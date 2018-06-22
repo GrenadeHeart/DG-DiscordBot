@@ -34,23 +34,24 @@ namespace DGBot
         {
             var client = new DiscordSocketClient();
             uptimeStart = DateTime.Now; // Assign uptimeStart to the time bot is started on.
-#if DEBUG
-            await client.SetStatusAsync(UserStatus.DoNotDisturb); // Set a Do Not Disturb status for the bot.
-                await client.SetGameAsync("in Debug Mode. (/help)", "https://discordapp.com/", StreamType.Twitch); // Set a playing status for the bot.
+            if (System.Diagnostics.Debugger.IsAttached)
+            {
+                await client.SetStatusAsync(UserStatus.DoNotDisturb); // Set a Do Not Disturb status for the bot.
+                await client.SetGameAsync("in Debug Mode. (/help)"); // Set a playing status for the bot.
                 MODE = "DEBUG"; // Sets the MODE to current running mode.
-#else            //}
-            //else
-            //{
+            }
+            else
+            {
                 await client.SetStatusAsync(UserStatus.Online); // Set an online status for the bot.
                 await client.SetGameAsync("/help", "https://discordapp.com/", StreamType.Twitch); // Set a playing status for the bot.
                 MODE = "RELEASE"; // Sets the MODE to current running mode.
-            //}
-#endif
+            }
             Console.WriteLine("Copyright (C) lord_Dash" + "\n" + $"Last updated: {Commands.update}");
             await console.LogMessage($"Started in mode: {MODE}");
             await console.OpenConfig();
 
             client.Log += console.Log; // Logs data on the Console.
+            client.UserJoined += console.UserJoinedRole;
 
             // INITIALIZE COMMAND HANDLING SERVICE
             handler = new CommandHandler();
